@@ -5,6 +5,7 @@
     score = 0,
     lives = 3,
     won = false,
+    snowWalkingTimeout=0,
     map, tileset, layer, winArea,
     cursor,jumpButton,restartButton,jumpTimer = 0,
     scoreText,introText,livesText,winText,livesTimeout=50,
@@ -86,7 +87,6 @@
 
     });
 
-    console.log(objects);
 
     tileset = game.add.tileset('tiles');
     tileset.setCollisionRange(0, tileset.total - 1, true, true, true, true);
@@ -176,6 +176,15 @@
     emitter.x = santa.x;
     emitter.y = santa.y;
     emitter.start(true, 2000, null, 8);
+  }
+  function particle(count) {
+    if(game.time.now > snowWalkingTimeout){
+      snowWalkingTimeout = game.time.now + 300;
+      count = count || 8;
+      emitter.x = santa.x;
+      emitter.y = santa.y;
+      emitter.start(true, 1000, null, count);
+    }
 
   }
   function restart(){
@@ -211,29 +220,32 @@
     if (cursors.left.isDown)
     {
         santa.body.velocity.x = -150;
-
+        particle(1);
         if (facing != 'left')
         {
             santa.animations.play('left');
             facing = 'left';
             santa.scale.x = -1;
+            particle(5);
         }
     }
     else if (cursors.right.isDown)
     {
         santa.body.velocity.x = 150;
-
+        particle(1);
         if (facing != 'right')
         {
             santa.animations.play('right');
             facing = 'right';
             santa.scale.x = 1;
+            particle(5);
         }
     }
     else
     {
         if (facing != 'idle')
         {
+            particle(5);
             santa.animations.stop();
 
             if (facing == 'left')
@@ -329,8 +341,6 @@
     console.log('hit!');
     if(game.time.now > livesTimeout){
       livesTimeout = game.time.now + 300;
-
-
 
       if(lives < 2){
         loose();

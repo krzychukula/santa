@@ -1,9 +1,11 @@
 sources:
 
-http://gmc.yoyogames.com/index.php?showtopic=563770
+Phaser: http://phaser.io/
+phaser generator: https://github.com/julien/generator-phaser
 
-http://opengameart.org/content/a-puzzling-present-image-bank
-
+Graphics: http://opengameart.org/content/a-puzzling-present-image-bank
+Tiled Map Editor: http://www.mapeditor.org/
+TexturePacker: http://www.codeandweb.com/texturepacker
 
 music: http://www.playonloop.com/2010-music-loops/jingle-bells/
-https://github.com/mneubrand/jsfxr
+8bits: https://github.com/mneubrand/jsfxr
