@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="30" height="20" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" name="texturepacker-sprite" tilewidth="16" tileheight="16">
+  <image source="texturepacker-sprite.png" width="144" height="128"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="30" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjALyAOMA2ctFY/Nx+UuYxvbi8pcMje3F5S9VGtuLy196NLYX3V+SUNqcxvYi+0sSyV4HGtsL85ckDowMmCi0SwqJ7YBmr9gAYfEBwgAUtwh+
+  </data>
+ </layer>
+</map>

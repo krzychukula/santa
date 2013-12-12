@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $TexturePacker:SmartUpdate:c89465f6631144f2ab6cf3493bfbbe75:263b877e259f3fba34d00e2f7413fa7f:9bbab1794ef724412e5535f05e01d0a1$ -->
+<x2d version="1.0">
+    <texture n="texturepacker-sprite" path="res/graphics/texturepacker-sprite.png">
+        <sprite n="candycane" x="0" y="0" w="16" h="128" />
+        <sprite n="coals" x="80" y="16" w="64" h="16" />
+        <sprite n="coals2" x="16" y="16" w="64" h="16" />
+        <sprite n="exit" x="112" y="32" w="16" h="16" />
+        <sprite n="g" x="48" y="32" w="32" h="16" />
+        <sprite n="holly1" x="96" y="32" w="16" h="16" />
+        <sprite n="santa-lone" x="80" y="32" w="16" h="16" />
+        <sprite n="santa" x="16" y="0" w="128" h="16" />
+        <sprite n="snow" x="128" y="32" w="3" h="3" />
+        <sprite n="tiles-default" x="16" y="32" w="32" h="16" />
+    </texture>
+</x2d>

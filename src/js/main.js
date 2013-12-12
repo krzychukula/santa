@@ -133,7 +133,7 @@
     emitter.bounce.setTo(0, 0);
 
     scoreText = game.add.text(32, height-25, 'score: '+score, { font: "20px Arial", fill: "#ffffff", align: "left" });
-    introText = game.add.text(width/2, height/2, '- collect all the presents! -', { font: "30px Arial", fill: "#ffffff", align: "center" });
+    introText = game.add.text(width/2, height/3, 'Help Santa Clause\ngather presents\nbefore Christmas!', { font: "30px Arial", lineHeight:"40px", fill: "#ffffff", align: "center" });
     introText.anchor.setTo(0.5, 0.5);
     var startWinText = 'Merry Christmas!';
     winText = game.add.text(width/2, height/3, startWinText, { font: "40px Arial", fill: "#ff0000", align: "center" });
@@ -173,13 +173,15 @@
   }
 
   function particleBurst() {
-    emitter.x = santa.x;
-    emitter.y = santa.y;
-    emitter.start(true, 2000, null, 8);
+    if(santa.body.touching.down){
+      emitter.x = santa.x;
+      emitter.y = santa.y;
+      emitter.start(true, 2000, null, 8);
+    }
   }
   function particle(count) {
-    if(game.time.now > snowWalkingTimeout){
-      snowWalkingTimeout = game.time.now + 300;
+    if(santa.body.touching.down && game.time.now > snowWalkingTimeout){
+      snowWalkingTimeout = game.time.now + 800;
       count = count || 8;
       emitter.x = santa.x;
       emitter.y = santa.y;
@@ -333,7 +335,7 @@
   }
   function loose(){
     if(won) return;
-    winText.content += '\n Sorry, you died';
+    winText.content = '\n Sorry, you died :(';
     win();
   }
 
