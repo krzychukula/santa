@@ -5,13 +5,31 @@
     score = 0,
     lives = 3,
     won = false,
-    map, tileset, layer,
+    map, tileset, layer, winArea,
     cursor,jumpButton,restartButton,jumpTimer = 0,
     scoreText,introText,livesText,winText,livesTimeout=50,
     presents, bushes,
+    music,
     emitter,globalSnow,globalSnow1,globalSnow2,
     width = 480,//document.body.clientWidth, //480 px
     height = 320;//document.body.clientHeight; //320 px
+
+
+    var pickupSound = [0,,0.0846,0.4967,0.4572,0.799,,,,,,0.3712,0.624,,,,,,1,,,,,0.5];
+    var hurtSound = [3,,0.0901,0.0031,0.2771,0.3585,0.0308,-0.5258,,0.024,,,,,0.0491,0.0082,0.0394,,1,0.0465,,0.1402,-0.0276,0.79];
+    var jumpSound = [0,,0.1948,,0.2876,0.5641,,0.1441,,,,,,0.5041,,,,,1,,,0.2416,,0.42];
+
+    var pickupSoundURL = jsfxr(pickupSound);
+    var pickup = new Audio();
+    pickup.src = pickupSoundURL;
+
+    var hurtSoundURL = jsfxr(hurtSound);
+    var hurt = new Audio();
+    hurt.src = hurtSoundURL;
+
+    var jumpSoundURL = jsfxr(jumpSound);
+    var jump = new Audio();
+    jump.src = jumpSoundURL;
 
   function preload() {
     var dir = 'assets/all-images/images/';
@@ -20,14 +38,22 @@
     game.load.image('snow', dir+'snow.png');
     game.load.image('present', dir+'exit.png');
     game.load.image('bush', dir+'holly1.png');
+    game.load.image('win', dir+'pres2.png');
 
     game.load.tilemap('start', 'assets/maps/start.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.tileset('tiles', 'assets/texturepacker-sprite.png', 16, 16);
+
+    game.load.audio('jingle', ['assets/POL-jingle-bells-short.wav']);
+
+
+
   }
 
   function create() {
     this.game.stage.backgroundColor = '#2e2c3d';
 
+    music = game.add.audio('jingle',1,true);
+    music.play('',0,1,true);
 
     map = game.add.tilemap('start');
 
@@ -50,7 +76,10 @@
           gameObject.body.immovable = true;
           break;
         case 'win':
-          console.log(el);
+          winArea = game.add.sprite(el.x, el.y, 'win');
+          winArea.body.bounce.setTo(0, 0);
+          winArea.body.immovable = true;
+          winArea.body.setSize(el.width, el.height);
         break;
 
       }
@@ -106,7 +135,7 @@
     scoreText = game.add.text(32, height-25, 'score: '+score, { font: "20px Arial", fill: "#ffffff", align: "left" });
     introText = game.add.text(width/2, height/2, '- collect all the presents! -', { font: "30px Arial", fill: "#ffffff", align: "center" });
     introText.anchor.setTo(0.5, 0.5);
-    var startWinText = '- Merry Christmas! -';
+    var startWinText = 'Merry Christmas!';
     winText = game.add.text(width/2, height/3, startWinText, { font: "40px Arial", fill: "#ff0000", align: "center" });
     winText.anchor.setTo(0.5, 0.5);
     winText.start = {content: startWinText};
@@ -167,6 +196,7 @@
 
 
     game.physics.collide(santa, presents, santaGotPresent, null, this);
+    game.physics.collide(santa, winArea, santaWin, null, this);
     game.physics.collide(santa, bushes, santaHitBush, null, this);
 
     santa.body.velocity.x = 0;
@@ -221,6 +251,7 @@
 
     if ((cursors.up.isDown || jumpButton.isDown) && santa.body.touching.down && game.time.now > jumpTimer)
     {
+      jump.play();
         santa.body.velocity.y = -250;
         jumpTimer = game.time.now + 750;
 
@@ -243,13 +274,29 @@
 
   function render(){
     //game.debug.renderSpriteBody(santa);
+    //game.debug.renderSpriteBody(winArea);
+    //game.debug.renderRectangle(winArea, '#0fffff');
+
   }
 
+  function santaWin(santa, winArea){
+    console.log('santa win!');
+    if(won) return;
+    pickup.play();
+
+    scoreText.content = 'score: ' + score;
+    //  New level starts
+    score += 50;
+    scoreText.content = 'score: ' + score;
+    win();
+
+  }
 
   function santaGotPresent(santa, present){
     present.kill();
 
     score += 1;
+    pickup.play();
 
     scoreText.content = 'score: ' + score;
 
@@ -266,7 +313,7 @@
   function win(){
     if(won) return;
     winText.x = game.camera.x + width/2;
-    winText.content += '\n- your score: '+score+' -';
+    winText.content += '\nyour score: '+score+'';
     winText.visible = true;
     introText.visible = false;
     won = true;
@@ -283,10 +330,13 @@
     if(game.time.now > livesTimeout){
       livesTimeout = game.time.now + 300;
 
+
+
       if(lives < 2){
         loose();
         lives = 0;
       }else{
+        hurt.play();
         lives -= 1;
       }
     }
