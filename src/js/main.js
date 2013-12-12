@@ -318,7 +318,7 @@
     if (presents.countLiving() == 0)
     {
         //  New level starts
-        score += 1000;
+        score += 0;
         scoreText.content = 'score: ' + score;
         win();
     }
@@ -327,7 +327,7 @@
   function win(){
     if(won) return;
     winText.x = game.camera.x + width/2;
-    winText.content += '\nyour score: '+score+'';
+    winText.content += '\npresents gathered: '+score+'';
     winText.visible = true;
     introText.visible = false;
     won = true;
