@@ -10,7 +10,7 @@
 
   function preload() {
     var dir = 'assets/all-images/images/';
-    game.load.spritesheet('santa', dir+'santa.png', 16, 16);
+    game.load.spritesheet('santa', dir+'santa.png', 15.9, 16, 6);
     game.load.image('present', dir+'exit.png');
         game.load.image('snow', dir+'snow.png');
 
@@ -37,9 +37,10 @@
     santa.body.gravity.y = 6;
     santa.body.setSize(16, 16, 0, 0);
 
-    santa.animations.add('left', [1, 2], 10, true);
+    var speed = 15;
+    santa.animations.add('right', [1, 2, 3, 4, 5], speed, true);
     santa.animations.add('turn', [0], 20, true);
-    santa.animations.add('right', [3,4], 10, true);
+    santa.animations.add('left', [1, 2, 3, 4, 5], speed, true);
 
     game.camera.follow(santa);
 
@@ -70,6 +71,7 @@
     window.addEventListener('resize', function () {
       game.stage.scale.refresh();
     });
+    Phaser.Canvas.setSmoothingEnabled(game.context, false);
   }
 
   function cretateGlobalSnow(){
@@ -97,6 +99,7 @@
 }
 
   function update() {
+
     game.physics.collide(santa, layer);
 
     santa.body.velocity.x = 0;
@@ -109,6 +112,7 @@
         {
             santa.animations.play('left');
             facing = 'left';
+            santa.scale.x = -1;
         }
     }
     else if (cursors.right.isDown)
@@ -119,6 +123,7 @@
         {
             santa.animations.play('right');
             facing = 'right';
+            santa.scale.x = 1;
         }
     }
     else
